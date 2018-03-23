@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.inkarkapen.stacking.models.Category;
 import com.inkarkapen.stacking.models.Product;
@@ -59,22 +60,28 @@ public class HomeController {
 	}
 	@RequestMapping("/product/{id}")
 	public String showProduct(@PathVariable("id") Long id, Model model) {
-		List<Category> categories = categoryService.findAll();
 		model.addAttribute("product", productService.findById(id));
 		model.addAttribute("categories", categoryService.findAll());
-		model.addAttribute("id", id);
-		for(Category category: categories) {
-			System.out.print(category.getId());
-			System.out.print(category.getName());
-			
-		}
 		return "product.jsp";
 	}
 	@RequestMapping("/category/{id}")
 	public String showCategory(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("category", categoryService.findById(id));
 		model.addAttribute("products", productService.findAll());
-		model.addAttribute("id", id);
 		return "category.jsp";
+	}
+	@RequestMapping("/product/addCategory")
+	public String addCategoryToProduct(@RequestParam(value = "product_id") Long product_id, @RequestParam(value = "category_id") Long category_id) {
+		Category category = categoryService.findById(category_id);
+		Product product = productService.findById(product_id);
+		productService.addCategory(product, category);
+		return "redirect:/";
+	}
+	@RequestMapping("/category/addProduct")
+	public String addProductToCategory(@RequestParam(value = "product_id") Long product_id, @RequestParam(value = "category_id") Long category_id) {
+		Category category = categoryService.findById(category_id);
+		Product product = productService.findById(product_id);
+		categoryService.addProduct(product, category);
+		return "redirect:/";
 	}
 }

@@ -10,15 +10,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2><c:out value = "${category.name}"/></h2>
+	<h2>Name: <c:out value = "${category.name}"/></h2>
 	
+	<h2>All Products Of This Category:</h2>
+	<c:forEach items = "${category.products}" var = "product">
+		<p><c:out value = "${product.name}"/><p>
+	</c:forEach>
+	
+	<h3>Add a New Products To This Category:</h3>
 	<form method="POST" action="/category/addProduct">
-		<input type = "hidden" value = "${category.id}"/>
-		<select>
+		<input type = "hidden" name = "category_id" value = "${category.id}"/>
+		<select name = "product_id">
 			<c:forEach items = "${products}" var = "product">
 				<option value = "${product.id}">
 					<c:out value = "${product.name}"/>
-				<option>
+				</option>
 			</c:forEach>
 		</select>
 		<input type = "submit" value = "Submit">

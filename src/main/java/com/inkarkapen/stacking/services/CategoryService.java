@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import com.inkarkapen.stacking.models.Category;
+import com.inkarkapen.stacking.models.Product;
 import com.inkarkapen.stacking.repositories.CategoryRepository;
 
 @Service
@@ -23,5 +24,9 @@ public class CategoryService {
 	}
 	public Category findById(Long id) {
 		return categoryRepository.findById(id).orElse(null);
+	}
+	public void addProduct(Product product, Category category) {
+		category.getProducts().add(product);
+		categoryRepository.save(category);
 	}
 }
